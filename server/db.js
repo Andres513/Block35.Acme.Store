@@ -59,6 +59,7 @@ const fetchUser = async()=>{
 const createFavorites = async({user_id, product_id})=>{
     const SQL = `
     INSERT INTO favorites(id, user_id, product_id) VALUES($1, $2, $3)
+    RETURNING *
     `
     const response = await client.query(SQL, [uuid.v4(), user_id, product_id])
     return response.rows[0]
@@ -77,7 +78,8 @@ const deleteFavorites = async({user_id, id}) => {
     WHERE user_id=$1 AND id=$2
     RETURNING *
     `
-    await client.query(SQL, [user_id, id])
+    const response = await client.query(SQL, [user_id, id])
+    return response.rows[0]
 }
 module.exports = {
     client,

@@ -77,14 +77,18 @@ const init = async()=>{
         createFavorites({user_id: andres.id, product_id: hammer.id}),
         createFavorites({user_id: emily.id, product_id: drill.id}),
         createFavorites({user_id: david.id, product_id: screws.id}),
+        createFavorites({user_id: david.id, product_id: hammer.id}),
+        createFavorites({user_id: david.id, product_id: drill.id}),
         createFavorites({user_id: jane.id, product_id: nails.id})
     ])
 
-    const favoriteAndres = await fetchFavorites(andres.id)
-    console.log('favorite of Andres:', favoriteAndres)
+    console.log('List of favorites for David before deleting', await fetchFavorites(david.id));
+    const deleteFavDavid = await deleteFavorites({ user_id: david.id, id: favorites[2].id});
+    const afterDeleteFavDavid = await fetchFavorites(david.id)
+    console.log('List of favorites for David after deleting', afterDeleteFavDavid);
 
     console.log(`(Copy and Paste to POST): CURL -X POST localhost:3000/api/users/${david.id}/favorites -d '{"product_id":"${hammer.id}"}' -H 'Content-Type:application/json'`); 
-    console.log(`(Copy and Paste to DELETE): CURL -X DELETE localhost:3000/api/users/${david.id}/favorites/${hammer.id}`);
+    console.log(`(Copy and Paste to DELETE): CURL -X DELETE localhost:3000/api/users/${david.id}/favorites/${favorites[3].id}`);
 
     const port = process.env.PORT || 3000
     app.listen(port, ()=>console.log(`listening on port ${port}`))
